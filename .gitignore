@@ -1,3 +1,4 @@
 /.env
 /__pycache__
 /venv
+discord_bot_run.sh
