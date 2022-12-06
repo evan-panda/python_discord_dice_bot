@@ -1,4 +1,3 @@
-# working on desktop pc
 import os
 from dotenv import load_dotenv
 
@@ -33,11 +32,11 @@ client = aclient()
 tree = app_commands.CommandTree(client)
 
 
-@tree.command(name='test',
-              description='testing',
+@tree.command(name='hello',
+              description='Enter your name and say hi!',
               guild=discord.Object(id=test_server_id))
 async def self(interaction: Interaction, name: str):
-    print('/test - command executed')
+    print(f"'/hello' - command executed - with {name}")
     await interaction.response.send_message(
         f'Hello {name}! I was made with Discord.py!', ephemeral=True)
 
@@ -52,10 +51,10 @@ async def roll20(interaction: Interaction):
 
 
 @tree.command(name='r',
-              description='Rolls dice from given formula. e.g. "1d20+2"',
+              description='Rolls dice from user input. e.g. "1d20+2"',
               guild=discord.Object(id=test_server_id))
 async def roll(interaction: Interaction, rolls: str, type: str = "s"):
-    print(f'user input rolls: {rolls}\ntype: {type}')
+    print(f"'/r' - command executed - user input rolls: {rolls}\ntype: {type}")
     roll_output = handle_rolls(rolls)
     if len(roll_output) > 1 and isinstance(roll_output, list):
         roll_output = '\n'.join(roll_output)

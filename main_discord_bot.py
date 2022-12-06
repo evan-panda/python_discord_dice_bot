@@ -1,3 +1,4 @@
+#!./venv/bin/python
 import slash_commands
 
 if __name__ == '__main__':
