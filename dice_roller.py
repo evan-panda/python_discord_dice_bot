@@ -57,8 +57,8 @@ class DiceRoller():
         self.roll_type = RollType.STANDARD
 
 
-    def roll_dice(self, dice_roll):
-        """Roll dice. Get number of dice and dice sides """
+    def roll_dice(self, dice_roll) -> list[int]:
+        """Roll dice. With number of dice and dice sides"""
         num_dice, sides = re.split('[dD]', dice_roll, maxsplit=2)
         num_dice, sides = int(num_dice), int(sides)
 
@@ -72,8 +72,8 @@ class DiceRoller():
         return rolls
 
 
-    def __add_items(self, sign, num):
-        """Deciding to add positive or negative number """
+    def __add_items(self, sign, num) -> int:
+        """Deciding to add positive or negative number"""
         if type(num) is list:
             num = sum(num)
 
@@ -83,7 +83,7 @@ class DiceRoller():
         return num
 
 
-    def __clean_roll_input(self, rollInput):
+    def __clean_roll_input(self, rollInput) -> list:
         """get list of various rolls and modifiers"""
         stripDoubleMods = re.sub(checkDoublePlus, '+', rollInput)
         stripDoubleMods = re.sub(checkDoubleMinus, '-', stripDoubleMods)
@@ -103,7 +103,7 @@ class DiceRoller():
         return cleanedRolls
 
 
-    def __construct_output_std(self, rollInput):
+    def __construct_output_std(self, rollInput) -> list:
         """construct output and get total roll"""
         total = 0 # total number rolled +/- others
         output = [] # output string list
@@ -122,7 +122,7 @@ class DiceRoller():
                     if i == (len(item) - 1):
                         output.append(str(val))
                     else:
-                        output.append(str(val) + ' + ')
+                        output.append(f'{str(val)} + ')
                 output.append(') ')
             elif re.search(checkMod, item) is not None:  # is modifier (+/-)
                 output.append(item + ' ')
@@ -147,10 +147,14 @@ class DiceRoller():
 
 
     def __construct_advantage_output(self, user_in: str):
+        """
+        Rolling with advantage.
+          Add +1d to first die rolled and drop the lowest result.
+        """
         # TODO implement advantage rolls starting here
         pass
 
-    def handle_rolls(self, user_in: str, r_type: str = 's'):
+    def handle_rolls(self, user_in: str, r_type: str = 's') -> (str | list[str]):
         """Performs some checks and returns final output"""
         cleaned_rolls = [] # set default empty rolls list
         
@@ -170,12 +174,17 @@ class DiceRoller():
             print(f'"{user_in}" is not valid. Please try again.')
             return f'"{user_in}" is not recognized as a valid roll input. Please try again with something like, "2d6" or "1d20+2+1d4"'
 
-        output = self.__construct_output_std(cleaned_rolls) 
+        output = self.__construct_output_std(cleaned_rolls)
+
+        if self.roll_type == RollType.ADVANTAGE:
+            adv_output = self.__construct_advantage_output(cleaned_rolls)
 
         ## print results
-        print(f'Rolling: {"".join(cleaned_rolls)}') 
-        print(f'Rolled: {"".join(output[0])}') 
-        print(f'Total: {str(output[1])}') 
+        print(
+            f'Rolling: {"".join(cleaned_rolls)}'
+            f'Rolled: {"".join(output[0])}'
+            f'Total: {eval("".join(output[0]))}'
+        )
 
         return [
             f'Rolling: {"".join(cleaned_rolls)}',

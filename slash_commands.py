@@ -41,6 +41,7 @@ tree = app_commands.CommandTree(client)
     guild=discord.Object(id=test_server_id)
 )
 async def ping(interaction: Interaction):
+    """See how long the bot takes to respond"""
     await interaction.response.send_message(f'Pong! {round(client.latency * 1000)}ms', ephemeral=True)
 
 
@@ -50,6 +51,7 @@ async def ping(interaction: Interaction):
     guild=discord.Object(id=test_server_id)
 )
 async def self(interaction: Interaction, name: str):
+    """Say hi to user"""
     print(f"'/hello' - command executed - with {name}")
     await interaction.response.send_message(
         f'Hello {name}! I was made with Discord.py!', ephemeral=True)
@@ -61,6 +63,7 @@ async def self(interaction: Interaction, name: str):
     guild=discord.Object(id=test_server_id)
 )
 async def self(interaction: Interaction):
+    """Print help message to user"""
     await interaction.response.send_message(help_message, ephemeral=True)
 
 
@@ -70,9 +73,10 @@ async def self(interaction: Interaction):
     guild=discord.Object(id=test_server_id)
 )
 async def roll20(interaction: Interaction):
+    """Roll 1d20"""
     roll = str(randint(1, 20))
     print(f"'/20' - command executed - result: {roll}")
-    await interaction.response.send_message(roll)
+    await interaction.response.send_message(f'Rolling: 1d20\nRolled: ({roll})')
 
 
 @tree.command(
@@ -81,6 +85,7 @@ async def roll20(interaction: Interaction):
     guild=discord.Object(id=test_server_id)
 )
 async def roll(interaction: Interaction, rolls: str, type: str = "s"):
+    """Roll dice formula input by user"""
     print(f"'/r' - command executed - user input rolls: {rolls}\ntype: {type}")
     ephemeral_flag = False
     roller = DiceRoller()
@@ -94,7 +99,10 @@ async def roll(interaction: Interaction, rolls: str, type: str = "s"):
         # make it so only the person sending the help message can see it
         ephemeral_flag = True
 
-    await interaction.response.send_message(roll_output, ephemeral=ephemeral_flag)
+    if len(roll_output) < 2000:
+        await interaction.response.send_message(roll_output, ephemeral=ephemeral_flag)
+    else:
+        await interaction.response.send_message("The message is too large, please roll less dice.")
 
 
 def run_bot():
