@@ -1,6 +1,7 @@
 from random import randint
 import re
 from enum import Enum
+from user_exceptions import *
 
 # variables 
 replaceCharsRegex = r'[\s\`\~\!\@\#\$\%\^\&\*\(\)\_\=\[\]\{\}\\\|\;\:\'\"\,\<\>\/\?]'
@@ -53,6 +54,7 @@ Roll types are:
 
 class DiceRoller():
     def __init__(self) -> None:
+        self.roll_str = None
         self.roll_list = []
         self.roll_type = RollType.STANDARD
 
@@ -83,21 +85,24 @@ class DiceRoller():
         return num
 
 
-    def __clean_roll_input(self, rollInput) -> list:
+    def __clean_roll_input(self, roll_input) -> list:
         """get list of various rolls and modifiers"""
-        stripDoubleMods = re.sub(checkDoublePlus, '+', rollInput)
+        # see if it's a valid roll
+        if not re.match(check_valid_basic, roll_input):
+            raise InvlidRollFormatException(roll_input)
+
+        stripDoubleMods = re.sub(checkDoublePlus, '+', roll_input)
         stripDoubleMods = re.sub(checkDoubleMinus, '-', stripDoubleMods)
         userRolls = re.split(checkMod, stripDoubleMods)
-        
+
         cleanedRolls = []
         for item in userRolls:
             item = item.strip(replaceChars)
+ 
             if len(re.findall(r'[dD]', item)) > 1:  # check for multiple "d's" in the roll
-                cleanedRolls = []
-                return cleanedRolls
+                raise InvlidRollFormatException(roll_input)
             elif re.findall(checkInvalidChars, item):  # check of other invalid characters
-                cleanedRolls = []
-                return cleanedRolls
+                raise InvlidRollFormatException(roll_input)
 
             cleanedRolls.append(item)
         return cleanedRolls
@@ -134,6 +139,16 @@ class DiceRoller():
         return [output, total]
 
 
+    def __construct_advantage_output(self, user_in: str):
+        """
+        Rolling with advantage.
+          Add +1d to first die rolled and drop the lowest result.
+        """
+        # TODO implement advantage rolls starting here
+        
+        pass
+
+
     def __get_roll_type(self, r_type:str):
         """Chooses proper enum for given roll type"""
         if r_type.startswith('a'):
@@ -145,14 +160,6 @@ class DiceRoller():
         elif r_type.startswith('w'):
             self.roll_type = RollType.WORST
 
-
-    def __construct_advantage_output(self, user_in: str):
-        """
-        Rolling with advantage.
-          Add +1d to first die rolled and drop the lowest result.
-        """
-        # TODO implement advantage rolls starting here
-        pass
 
     def handle_rolls(self, user_in: str, r_type: str = 's') -> (str | list[str]):
         """Performs some checks and returns final output"""
@@ -167,12 +174,21 @@ class DiceRoller():
         elif user_in.startswith('-'):
             user_in = user_in[1:]
 
-        if re.match(check_valid_basic, user_in): # see if it's a valid roll 
-            cleaned_rolls = self.__clean_roll_input(user_in)
+        error_message = '"{user_in}" is not recognized as a valid roll input. Please try again with something like: 2d6 or 1d20+2+1d4'
 
+        # Try to get the "roll" in a list. Return error message if something goes wrong.
+        try:
+            cleaned_rolls = self.__clean_roll_input(user_in)
+        except InvlidRollFormatException as e:
+            print(e.message)
+            return error_message
+        except Exception as e:
+            print(e)
+            return error_message
+
+        # If there's no rolls something went wrong. Return error message.
         if len(cleaned_rolls) < 1:
-            print(f'"{user_in}" is not valid. Please try again.')
-            return f'"{user_in}" is not recognized as a valid roll input. Please try again with something like, "2d6" or "1d20+2+1d4"'
+            return error_message
 
         output = self.__construct_output_std(cleaned_rolls)
 
@@ -181,8 +197,8 @@ class DiceRoller():
 
         ## print results
         print(
-            f'Rolling: {"".join(cleaned_rolls)}'
-            f'Rolled: {"".join(output[0])}'
+            f'Rolling: {"".join(cleaned_rolls)} '
+            f'Rolled: {"".join(output[0])} '
             f'Total: {eval("".join(output[0]))}'
         )
 
