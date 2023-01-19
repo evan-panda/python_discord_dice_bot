@@ -4,8 +4,8 @@ from enum import Enum
 from user_exceptions import *
 
 # variables 
-replaceCharsRegex = r'[\s\`\~\!\@\#\$\%\^\&\*\(\)\_\=\[\]\{\}\\\|\;\:\'\"\,\<\>\/\?]'
-replaceChars = '`~!@#$%^&*)(_=][}{\\|;:\'",.></? \t\r\n'
+replace_chars_regex = r'[\s\`\~\!\@\#\$\%\^\&\*\(\)\_\=\[\]\{\}\\\|\;\:\'\"\,\<\>\/\?]'
+replace_chars = '`~!@#$%^&*)(_=][}{\\|;:\'",.></? \t\r\n'
 
 # regex checks 
 checkSave = r'^(add|set|save)' # starts with set, save, or keep 
@@ -54,18 +54,17 @@ Roll types are:
 
 class DiceRoller():
     def __init__(self) -> None:
-        self.roll_str = None
+        self.special_flag = True 
+        self.roll_str = "" 
         self.roll_list = []
         self.roll_type = RollType.STANDARD
 
 
-    def roll_dice(self, dice_roll) -> list[int]:
-        """Roll dice. With number of dice and dice sides"""
-        num_dice, sides = re.split('[dD]', dice_roll, maxsplit=2)
-        num_dice, sides = int(num_dice), int(sides)
-
-        # if self.roll_type == RollType.ADVANTAGE or self.roll_type == RollType.DISADVANTAGE:
-        #     num_dice += 1
+    def roll_dice(self, num_dice, sides) -> list[int]:
+        """
+        Roll dice with number of dice and dice sides
+        Return: list of roll values
+        """
 
         rolls = []
         for i in range(num_dice):
@@ -97,7 +96,7 @@ class DiceRoller():
 
         cleanedRolls = []
         for item in userRolls:
-            item = item.strip(replaceChars)
+            item = item.strip(replace_chars)
  
             if len(re.findall(r'[dD]', item)) > 1:  # check for multiple "d's" in the roll
                 raise InvlidRollFormatException(roll_input)
@@ -108,18 +107,22 @@ class DiceRoller():
         return cleanedRolls
 
 
-    def __construct_output_std(self, rollInput) -> list:
+    def __construct_output_std(self, roll_input) -> list:
         """construct output and get total roll"""
         total = 0 # total number rolled +/- others
         output = [] # output string list
-        for indx, item in enumerate(rollInput):
+        for indx, item in enumerate(roll_input):
             if indx > 0:
-                sign = rollInput[indx - 1]
+                sign = roll_input[indx - 1]
             else:
                 sign = '+'
             
             if re.match(checkRoll, item) is not None:  # is dice roll (xdx) 
-                item = self.roll_dice(item)
+                # get number of dice, and dice sides
+                num_dice, sides = re.split('[dD]', item, maxsplit=2)
+                num_dice, sides = int(num_dice), int(sides)
+
+                item = self.roll_dice(num_dice, sides)
                 total += self.__add_items(sign, item)
 
                 output.append('(')
@@ -139,14 +142,39 @@ class DiceRoller():
         return [output, total]
 
 
-    def __construct_advantage_output(self, user_in: str):
+    def __construct_advantage_output(self, roll_input: str):
         """
         Rolling with advantage.
           Add +1d to first die rolled and drop the lowest result.
         """
-        # TODO implement advantage rolls starting here
-        
-        pass
+        # class variables
+        # self.special_flag = False
+        # self.roll_str = None
+        # self.roll_list = []
+        print("rolling with advantage")
+
+        for indx, item in enumerate(roll_input):
+            if re.match(checkRoll, item) is not None:  # is dice roll (xdx) 
+                # get number of dice, and dice sides
+                num_dice, sides = re.split('[dD]', item, maxsplit=2)
+                num_dice, sides = int(num_dice), int(sides)
+
+                # add 1 die for advantage if it hasn't been done yet
+                if self.special_flag:
+                    self.special_flag = False
+                    num_dice += 1
+
+                roll_values = self.roll_dice(num_dice, sides)
+                print('rolls')
+                print(roll_values)
+                lowest = min(roll_values)
+                # roll_values.remove(lowest)
+                self.roll_str += '+'.join([str(n) for n in roll_values])
+            else:
+                self.roll_str += item
+
+        print(f'roll_str: {self.roll_str}')
+        print(f'value: {eval(self.roll_str)}')
 
 
     def __get_roll_type(self, r_type:str):
@@ -167,14 +195,14 @@ class DiceRoller():
         
         self.__get_roll_type(r_type.lower())
 
-        user_in = user_in.strip(replaceChars).lower()
+        user_in = user_in.strip(replace_chars).lower()
 
         if user_in.startswith('help'):
             return help_message
         elif user_in.startswith('-'):
             user_in = user_in[1:]
 
-        error_message = '"{user_in}" is not recognized as a valid roll input. Please try again with something like: 2d6 or 1d20+2+1d4'
+        error_message = f'"{user_in}" is not recognized as a valid roll input. Please try again with something like: 2d6 or 1d20+2+1d4'
 
         # Try to get the "roll" in a list. Return error message if something goes wrong.
         try:
