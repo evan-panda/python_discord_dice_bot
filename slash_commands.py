@@ -62,7 +62,7 @@ async def self(interaction: Interaction, name: str):
     description='Prints a useful message with example roll input and what the supported roll types are.',
     guild=discord.Object(id=test_server_id)
 )
-async def self(interaction: Interaction):
+async def help(interaction: Interaction):
     """Print help message to user"""
     await interaction.response.send_message(help_message, ephemeral=True)
 
@@ -108,6 +108,6 @@ async def roll(interaction: Interaction, rolls: str, type: str = "s"):
 def run_bot():
     client.run(bot_token)
 
+
 if __name__ == '__main__':
     run_bot()
-
