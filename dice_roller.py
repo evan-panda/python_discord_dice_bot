@@ -14,7 +14,7 @@ checkSave = r'^(add|set|save)'  # starts with set, save, or keep
 checkDel = r'^(delete|del|remove|destroy)'  # start with delete, del, remove, or destroy
 check_roll = r'([0-9]+[dD][0-9]+)'  # check for xdx
 check_valid_basic = r'(\d+\s*[+-]\s*)+|(\d+[dD]\d+)'
-checkMod = r'(\s*[+-]\s*)'  # find +/- symbols
+check_mod = r'(\s*[+-]\s*)'  # find +/- symbols
 check_double_plus = r'(\s*[+]\s*){2,}'  # find 2 or more +/- in a row
 check_double_minus = r'(\s*[-]\s*){2,}'  # find 2 or more +/- in a row
 checkDigits = r'^\d+$'  # check for only digits
@@ -31,12 +31,14 @@ rw = worst
 
 
 class RollType(Enum):
-    ADVANTAGE = 'ADVANTAGE'        # +1d, drop lowest
-    DISADVANTAGE = 'DISADVANTAGE'  # +1d, drop highest
-    BEST = 'BEST'                  # keep single best
-    WORST = 'WORST'                # keep single worst
-    POOL = 'POOL'                  # roll dice pool, keep single highest
-    STANDARD = 'STANDARD'          # roll normally
+    ADVANTAGE = 'Advantage'        # +1d, drop lowest
+    DISADVANTAGE = 'Disadvantage'  # +1d, drop highest
+    BEST = 'Best'                  # keep single best
+    WORST = 'Worst'                # keep single worst
+    POOL = 'Pool'                  # roll dice pool(s), keep single highest
+    DROPLOWEST = 'Drop Lowest'     # drop lowest value
+    DROPHIGHEST = 'Drop Highest'   # drop lowest value
+    STANDARD = 'Standard'          # roll normally
 
 
 help_message = """
@@ -100,7 +102,7 @@ class DiceRoller():
 
         strip_double_mods = re.sub(check_double_plus, '+', roll_input)
         strip_double_mods = re.sub(check_double_minus, '-', strip_double_mods)
-        user_rolls = re.split(checkMod, strip_double_mods)
+        user_rolls = re.split(check_mod, strip_double_mods)
 
         cleaned_rolls = []
         for item in user_rolls:
@@ -129,52 +131,63 @@ class DiceRoller():
                 self.roll_dis_str += item
                 self.roll_eval_str += item
 
-        print(f'roll_dis_str: {self.roll_dis_str}')
-        print(f'roll_eval_str: {self.roll_eval_str}')
-        print(f'value: {eval(self.roll_eval_str)}')
-
+    def __construct_best_worst_output(self, roll_input: str):
         """
-        # doing way too much since eval() exists
-        total = 0  # total number rolled +/- others
-        output = []  # output string list
-        for indx, item in enumerate(roll_input):
-            if indx > 0:
-                sign = roll_input[indx - 1]
-            else:
-                sign = '+'
+        Get best die when rolling
+        """
+        bw_flag = -1
 
+        for indx, item in enumerate(roll_input):
             # check for dice roll (xdx)
             if re.match(check_roll, item) is not None:
                 # get number of dice, and dice sides
                 num_dice, sides = self.__get_num_and_sides(item)
 
-                item = self.roll_dice(num_dice, sides)
-                total += self.__add_items(sign, item)
+                # add 1 die for advantage if it hasn't been done yet
+                if self.special_flag:
+                    self.special_flag = False
 
-                output.append('(')
-                for i, val in enumerate(item):
-                    if i == (len(item) - 1):
-                        output.append(str(val))
+                # get list of roll values [int]
+                roll_values = self.roll_dice(num_dice, sides)
+
+                # get lowest/highest rolled value
+                if self.roll_type == RollType.BEST:
+                    bw_val = max(roll_input)
+                elif self.roll_type == RollType.WORST:
+                    bw_val = min(roll_values)
+
+                # TODO implement best/worst roll for display and eval strings
+                # put roll values into the display string
+                self.roll_dis_str += '('
+                for i, n in enumerate(roll_values):
+                    # find lowest value, print crossed out in message
+                    if bw_flag < 0 and n == bw_val:
+                        bw_flag = indx
+                        # cross out lowest value
+                        self.roll_dis_str += f'*~~ {str(n)} ~~*'
                     else:
-                        output.append(f'{str(val)} + ')
-                output.append(') ')
-            elif re.search(checkMod, item) is not None:  # is modifier (+/-)
-                output.append(item + ' ')
-            elif re.match(checkDigits, item) is not None:  # is digit (0-9)
-                output.append(item + ' ')
-                item = int(item)
-                total += self.__add_items(sign, item)
+                        self.roll_dis_str += f'{str(n)}'
 
-        return [output, total]
-        """
+                    # add "+" if not the last element
+                    if i < len(roll_values) - 1:
+                        self.roll_dis_str += '+'
+                self.roll_dis_str += ')'
 
-    def __construct_advantage_output(self, roll_input: str) -> tuple:
+                self.roll_eval_str += '(' + '+'.join([str(n) for n in roll_values]) + ')'
+            else:
+                # add to output if not a dice roll
+                self.roll_dis_str += item
+                self.roll_eval_str += item
+
+    def __construct_dis_advantage_output(self, roll_input: str):
         """
-        Rolling with advantage.
-          Add +1d to first die rolled and drop the lowest result.
+        Rolling with dis/advantage.
+          Add +1d to first die rolled and drop the lowest/highest result.
         """
         adv_flag = -1
-        print("rolling with advantage")
+        # logging
+        print('roll dis/advantage')
+        print(f'roll type: {self.roll_type}')
 
         for indx, item in enumerate(roll_input):
             # check for dice roll (xdx)
@@ -189,21 +202,23 @@ class DiceRoller():
 
                 # get list of roll values [int]
                 roll_values = self.roll_dice(num_dice, sides)
-                # TODO remove logging
-                print('rolls:')
-                print(roll_values)
 
-                # get lowest rolled value
-                lowest = min(roll_values)
+                # get highest roll for disadvantage, or lowest roll for advantage
+                highlow_val = 0
+                if self.roll_type == RollType.ADVANTAGE:
+                    highlow_val = min(roll_values)
+                elif self.roll_type == RollType.DISADVANTAGE:
+                    highlow_val = max(roll_values)
+                print(f'remove val: {highlow_val}')
 
                 # put roll values into the display string
                 self.roll_dis_str += '('
                 for i, n in enumerate(roll_values):
-                    # find lowest value, print crossed out in message
-                    if adv_flag < 0 and n == lowest:
+                    # find lowest/highest value, print crossed out in message
+                    if adv_flag < 0 and n == highlow_val:
                         adv_flag = indx
-                        # cross out lowest value
-                        self.roll_dis_str += f'*~~{str(n)}~~*'
+                        # cross out lowest/highest value
+                        self.roll_dis_str += f'*~~ {str(n)} ~~*'
                     else:
                         self.roll_dis_str += f'{str(n)}'
 
@@ -213,15 +228,12 @@ class DiceRoller():
                 self.roll_dis_str += ')'
 
                 if adv_flag == indx:
-                    roll_values.remove(lowest)
+                    roll_values.remove(highlow_val)
                 self.roll_eval_str += '(' + '+'.join([str(n) for n in roll_values]) + ')'
             else:
+                # add to output if not a dice roll
                 self.roll_dis_str += item
                 self.roll_eval_str += item
-
-        print(f'roll_dis_str: {self.roll_dis_str}')
-        print(f'roll_eval_str: {self.roll_eval_str}')
-        print(f'value: {eval(self.roll_eval_str)}')
 
     def __get_roll_type(self, r_type: str):
         """Chooses proper enum for given roll type"""
@@ -267,8 +279,8 @@ class DiceRoller():
             return error_message
 
         # create roll output
-        if self.roll_type == RollType.ADVANTAGE:
-            self.__construct_advantage_output(cleaned_rolls)
+        if self.roll_type == RollType.ADVANTAGE or self.roll_type == RollType.DISADVANTAGE:
+            self.__construct_dis_advantage_output(cleaned_rolls)
         else:
             self.__construct_output_std(cleaned_rolls)
 
