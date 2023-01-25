@@ -12,8 +12,8 @@ replace_chars = '`~!@#$%^&*)(_=][}{\\|;:\'",.></? \t\r\n'
 # regex checks
 checkSave = r'^(add|set|save)'  # starts with set, save, or keep
 checkDel = r'^(delete|del|remove|destroy)'  # start with delete, del, remove, or destroy
-check_roll = r'([0-9]+[dD][0-9]+)'  # check for xdx
-check_valid_basic = r'(\d+\s*[+-]\s*)+|(\d+[dD]\d+)'
+check_roll = r'([0-9]*[dD][0-9]+)'  # check for xdx, or just dx
+check_valid_basic = r'(\d+\s*[+-]\s*)+|(\d*[dD]\d+)'
 check_mod = r'(\s*[+-]\s*)'  # find +/- symbols
 check_double_plus = r'(\s*[+]\s*){2,}'  # find 2 or more +/- in a row
 check_double_minus = r'(\s*[-]\s*){2,}'  # find 2 or more +/- in a row
@@ -69,7 +69,7 @@ class DiceRoller():
     def __get_num_and_sides(self, raw_roll) -> tuple:
         """get number of dice, and dice sides"""
         num_dice, sides = re.split(r'[dD]', raw_roll, maxsplit=2)
-        num_dice, sides = int(num_dice), int(sides)
+        num_dice, sides = int(num_dice if num_dice else '1'), int(sides)
 
         return num_dice, sides
 
@@ -114,25 +114,6 @@ class DiceRoller():
 
             cleaned_rolls.append(item)
         return cleaned_rolls
-
-    def __construct_output_std(self, roll_input) -> list:
-        """construct output and get total roll"""
-        # standard roll
-        for indx, item in enumerate(roll_input):
-            # check for dice roll (xdx), else just add to display/eval strings
-            if re.match(check_roll, item) is not None:
-                # get number of dice, and dice sides
-                num_dice, sides = self.__get_num_and_sides(item)
-
-                # get list of roll values [int]
-                roll_values = self.roll_dice(num_dice, sides)
-
-                # add values to output
-                self.roll_dis_str += '(' + '+'.join([str(n) for n in roll_values]) + ')'
-                self.roll_eval_str += '(' + '+'.join([str(n) for n in roll_values]) + ')'
-            else:
-                self.roll_dis_str += item
-                self.roll_eval_str += item
 
     def __construct_dis_advantage_output(self, roll_input: str):
         """
@@ -280,6 +261,25 @@ class DiceRoller():
                 self.roll_dis_str += item
                 self.roll_eval_str += item
 
+    def __construct_output_std(self, roll_input) -> list:
+        """construct output and get total roll"""
+        # standard roll
+        for indx, item in enumerate(roll_input):
+            # check for dice roll (xdx), else just add to display/eval strings
+            if re.match(check_roll, item) is not None:
+                # get number of dice, and dice sides
+                num_dice, sides = self.__get_num_and_sides(item)
+
+                # get list of roll values [int]
+                roll_values = self.roll_dice(num_dice, sides)
+
+                # add values to output
+                self.roll_dis_str += '(' + '+'.join([str(n) for n in roll_values]) + ')'
+                self.roll_eval_str += '(' + '+'.join([str(n) for n in roll_values]) + ')'
+            else:
+                self.roll_dis_str += item
+                self.roll_eval_str += item
+
     # TODO implement Drop Lowest and Drop Highest values
 
     def __get_roll_type(self, r_type: str):
@@ -345,6 +345,7 @@ class DiceRoller():
             # log results
             print(results)
         except Exception as e:
+            print(f'ERROR: Something went wrong with input: {user_in} . . .\nSee exception output below.')
             print(e)
             return error_message
 
