@@ -24,9 +24,9 @@ class DClient(discord.Client):
     async def on_ready(self):
         await self.wait_until_ready()
         if not self.synced:
-            cmd_list = await tree.sync(guild=discord.Object(id=test_server_id))
+            cmd_list = await tree.sync(guild=discord.Object(id=test_server_id))  # noqa: F841
             print('command list synced')
-            print(cmd_list)
+            # print(cmd_list)
 
         print(f'Logged in as {self.user}')
 
