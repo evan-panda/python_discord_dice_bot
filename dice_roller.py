@@ -299,8 +299,6 @@ class DiceRoller():
                 self.roll_dis_str += item
                 self.roll_eval_str += item
 
-    # TODO implement Drop Lowest and Drop Highest values
-
     def __get_roll_type(self, r_type: str):
         """Chooses proper enum for given roll type"""
         if r_type.startswith('a'):

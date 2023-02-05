@@ -15,9 +15,7 @@ test_server_id = os.environ['test_server_id']
 
 
 class DClient(discord.Client):
-
-    def __init__(self, *, intents: Intents = Intents.default(),
-                 **options) -> None:
+    def __init__(self, *, intents: Intents = Intents.default(), **options) -> None:
         super().__init__(intents=intents, **options)
         self.synced = False
 
@@ -50,7 +48,7 @@ async def ping(interaction: Interaction):
     description='Enter your name and say hi!',
     guild=discord.Object(id=test_server_id)
 )
-async def self(interaction: Interaction, name: str):
+async def hello(interaction: Interaction, name: str):
     """Say hi to user"""
     print(f"'/hello' - command executed - with {name}")
     await interaction.response.send_message(
@@ -84,25 +82,44 @@ async def roll20(interaction: Interaction):
     description='Rolls dice from user input. e.g. 1d20+2',
     guild=discord.Object(id=test_server_id)
 )
-async def roll(interaction: Interaction, rolls: str, type: str = "s"):
+@app_commands.describe(rolls='Format: 2d6, 1d20+2+1d4')
+@app_commands.describe(roll_type='Select')
+@app_commands.choices(roll_type=[
+    discord.app_commands.Choice(name='Standard', value='s'),
+    discord.app_commands.Choice(name='Advantage', value='a'),
+    discord.app_commands.Choice(name='Disadvantage', value='d'),
+    discord.app_commands.Choice(name='Best', value='b'),
+    discord.app_commands.Choice(name='Worst', value='w'),
+    discord.app_commands.Choice(name='Pool', value='p'),
+    discord.app_commands.Choice(name='Drop Lowest', value='l'),
+    discord.app_commands.Choice(name='Drop Highest', value='h')
+])
+async def roll(interaction: Interaction, rolls: str, roll_type: discord.app_commands.Choice[str]):
     """Roll dice formula input by user"""
-    print(f"'/r' - command executed - user input rolls: {rolls}\ntype: {type}")
+    print(f"'/r' - command executed - user input rolls: {rolls}\ntype: {roll_type.value}")
     ephemeral_flag = False
     roller = DiceRoller()
 
-    roll_output = roller.handle_rolls(rolls, type)
+    roll_output = roller.handle_rolls(rolls, roll_type.value)
 
     # check if the returned value is a list, or the start of the help message
     if len(roll_output) > 1 and isinstance(roll_output, list):
-        roll_output = '\n'.join(roll_output)
+        message = '\n'.join(roll_output)
     elif roll_output.strip().startswith('Input Examples'):
         # make it so only the person sending the help message can see it
         ephemeral_flag = True
+        message = roll_output
 
     if len(roll_output) < 2000:
-        await interaction.response.send_message(roll_output, ephemeral=ephemeral_flag)
+        await interaction.response.send_message(message, ephemeral=ephemeral_flag)
     else:
-        await interaction.response.send_message("The message is too large, please roll less dice.")
+        message = '\n'.join([
+            roll_output[0],
+            roll_output[1],
+            roll_output[3],
+            "The message is too large, please roll less dice if you would like to see the individual results."
+        ])
+        await interaction.response.send_message(message)
 
 
 def run_bot():
