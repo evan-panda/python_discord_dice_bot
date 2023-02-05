@@ -222,6 +222,50 @@ class DiceRoller():
 
         return display_str, eval_str
 
+    def __roll_drop_high_low(self, num_dice, sides) -> tuple:
+        """
+        Drop the highest or lowest value when rolling the first die(dice)
+        """
+        self.special_flag = False
+        display_str = ""
+        eval_str = ""
+
+        # get list of roll values [int]
+        roll_values = self.roll_dice(num_dice, sides)
+
+        # get highest roll for disadvantage, or lowest roll for advantage
+        highlow_val = 0
+        if self.roll_type == RollType.DROPLOWEST:
+            highlow_val = min(roll_values)
+        elif self.roll_type == RollType.DROPHIGHEST:
+            highlow_val = max(roll_values)
+
+        # put roll values into the display string
+        adv_indx = -1
+        display_str += '('
+        if len(roll_values) > 1:
+            for i, n in enumerate(roll_values):
+                # find lowest/highest value, print crossed out in message
+                if adv_indx < 0 and n == highlow_val:
+                    adv_indx = i
+                    # cross out lowest/highest value
+                    display_str += f'*~~ {str(n)} ~~*'
+                else:
+                    display_str += f'{str(n)}'
+
+                # add "+" if not the last element
+                if i < (len(roll_values) - 1):
+                    display_str += '+'
+        else:
+            display_str += str(roll_values[0])
+        display_str += ')'
+
+        if len(roll_values) > 1:
+            roll_values.remove(highlow_val)
+        eval_str += '(' + '+'.join([str(n) for n in roll_values]) + ')'
+
+        return display_str, eval_str
+
     def __construct_output(self, roll_input) -> list:
         """construct output and get total roll"""
         # standard roll
@@ -241,6 +285,8 @@ class DiceRoller():
                     eval_str = '(' + '+'.join([str(n) for n in roll_values]) + ')'
                 elif self.roll_type == RollType.ADVANTAGE or self.roll_type == RollType.DISADVANTAGE:
                     display_str, eval_str = self.__roll_dis_advantage(num_dice, sides)
+                elif self.roll_type == RollType.DROPHIGHEST or self.roll_type == RollType.DROPLOWEST:
+                    display_str, eval_str = self.__roll_drop_high_low(num_dice, sides)
                 elif self.roll_type == RollType.BEST or self.roll_type == RollType.WORST:
                     display_str, eval_str = self.__roll_best_worst(num_dice, sides)
                 elif self.roll_type == RollType.POOL:
@@ -267,9 +313,9 @@ class DiceRoller():
             self.roll_type = RollType.WORST
         elif r_type.startswith('p'):
             self.roll_type = RollType.POOL
-        elif r_type.startswith('dl'):
+        elif r_type.startswith('l'):
             self.roll_type = RollType.DROPLOWEST
-        elif r_type.startswith('dh'):
+        elif r_type.startswith('h'):
             self.roll_type = RollType.DROPHIGHEST
 
     def handle_rolls(self, user_in: str, r_type: str = 's'):
