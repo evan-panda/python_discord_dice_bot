@@ -1,6 +1,6 @@
-/.env
-/__pycache__
-/venv
-discord_bot_run.sh
+*.env
+*__pycache__
+*venv
 *.log
+discord_bot_run.sh
 explore_file.py
