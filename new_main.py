@@ -35,7 +35,7 @@ class BotClient(commands.Bot):
         print('getting cog file list:')
         for file in os.listdir('./cogs'):
             if file.endswith('.py'):
-                print(f'loading cogs.{file[:-3]}')
+                print(f'loading - cogs.{file[:-3]}')
                 await self.load_extension(f'cogs.{file[:-3]}')
 
 
@@ -93,3 +93,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

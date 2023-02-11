@@ -1,6 +1,12 @@
+import discord
 from discord.ext import commands
 from discord import Interaction, app_commands
 from random import randint
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+test_server_id = os.environ['test_server_id']
 
 
 class Cards(commands.Cog):
@@ -20,10 +26,11 @@ class Cards(commands.Cog):
         f_card = {1: "Ace", 11: "Jack", 12: "Queen", 13: "King"}
 
         # get face card name if num is 1 or > 10, otherwise, use num
-        card = num if 2 < num < 11 else f_card.get(num)
+        card = num if 1 < num < 11 else f_card.get(num)
 
         await interaction.response.send_message(f"You drew the {card} of {suits.get(suit_n)}")
 
 
 async def setup(bot):
-    await bot.add_cog(Cards(bot))
+    await bot.add_cog(Cards(bot), guilds=[discord.Object(id=test_server_id)])
+

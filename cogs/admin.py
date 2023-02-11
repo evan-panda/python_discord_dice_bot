@@ -2,6 +2,12 @@ import discord
 from discord.ext import commands
 from discord import Interaction, app_commands
 from typing import Optional, Literal
+from dotenv import load_dotenv
+import os
+
+
+load_dotenv()
+test_server_id = os.environ['test_server_id']
 
 
 class Admin(commands.Cog):
@@ -90,4 +96,4 @@ class Admin(commands.Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(Admin(bot))
+    await bot.add_cog(Admin(bot), guilds=[discord.Object(id=test_server_id)])
