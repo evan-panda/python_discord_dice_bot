@@ -17,7 +17,7 @@ class Cards(commands.Cog):
     async def on_ready(self):
         print('Cards cog loaded.')
 
-    @app_commands.command(name='draw', description='Draws a random card.')
+    @app_commands.command(name='draw-card', description='Draws a random card.')
     async def draw(self, interaction: Interaction):
         suit_n = randint(0, 3)
         num = randint(1, 13)
@@ -33,4 +33,3 @@ class Cards(commands.Cog):
 
 async def setup(bot):
     await bot.add_cog(Cards(bot), guilds=[discord.Object(id=test_server_id)])
-
