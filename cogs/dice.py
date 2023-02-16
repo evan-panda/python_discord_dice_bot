@@ -57,16 +57,16 @@ class Dice(commands.Cog):
         discord.app_commands.Choice(name='Drop Lowest', value='l'),
         discord.app_commands.Choice(name='Drop Highest', value='h')
     ])
-    async def roll(self, interaction: Interaction, rolls: str, roll_type: discord.app_commands.Choice[str]):
+    async def roll(self, interaction: Interaction, roll: str, roll_type: discord.app_commands.Choice[str]):
         """
         Roll dice formula input by user
         - Command: /r
         """
-        print(f"'/r' - command executed - user input rolls: {rolls}\ntype: {roll_type.value}")
+        print(f"'/r' - command executed - user input rolls: {roll}\ntype: {roll_type.value}")
         ephemeral_flag = False
         roller = dice_handler.DiceRoller(debug=True)
 
-        roll_output = roller.handle_rolls(rolls, roll_type.value)
+        roll_output = roller.handle_rolls(roll, roll_type.value)
 
         # check if the returned value is a list, or the start of the help message
         if len(roll_output) > 1 and isinstance(roll_output, list):
@@ -96,4 +96,4 @@ class Dice(commands.Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(Dice(bot), guilds=[discord.Object(id=test_server_id)])
+    await bot.add_cog(Dice(bot))

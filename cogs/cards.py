@@ -1,4 +1,3 @@
-import discord
 from discord.ext import commands
 from discord import Interaction, app_commands
 from random import randint
@@ -32,4 +31,4 @@ class Cards(commands.Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(Cards(bot), guilds=[discord.Object(id=test_server_id)])
+    await bot.add_cog(Cards(bot))

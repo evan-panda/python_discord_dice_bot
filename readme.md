@@ -2,9 +2,9 @@
 This is a dicord bot designed to aid in the playing of TTRPGs directly from discord.
 
 # Setup
-Open the [bot invite link](https://discord.com/api/oauth2/authorize?client_id=1015631326424072232&permissions=2112&scope=bot%20applications.commands) in your browswer or discord and invite to the server you want it to join.
+Open the [bot invite link](https://discord.com/api/oauth2/authorize?client_id=1015631326424072232&permissions=2112&scope=bot%20applications.commands) in your browswer (where you are signed into discord) and invite the bot to the server you want it to join.
 
-Set up permissions on your channels so bot can view the channel(s) you want to use it in.
+Set up permissions on your channels so the bot can view the channel(s) you want to use it in.
 
 # Commands
 
