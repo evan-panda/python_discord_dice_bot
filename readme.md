@@ -2,7 +2,7 @@
 This is a dicord bot designed to aid in the playing of TTRPGs directly from discord.
 
 # Setup
-Open the [bot invite link](https://discord.com/api/oauth2/authorize?client_id=1015631326424072232&permissions=2112&scope=bot%20applications.commands) in your browswer (where you are signed into discord) and invite the bot to the server you want it to join.
+Open the [bot invite link](https://discord.com/api/oauth2/authorize?client_id=1015631326424072232&permissions=2112&scope=bot%20applications.commands) in your browser (where you are signed into discord) and invite the bot to the server you want it to join.
 
 Set up permissions on your channels so the bot can view the channel(s) you want to use it in.
 
@@ -32,3 +32,14 @@ Set up permissions on your channels so the bot can view the channel(s) you want 
 ## Cards
 
 `/draw-card` - simulates drawing a random card from a standard deck (exluding Jokers)
+
+## Owner Only
+<details>
+<summary>These commands are owner-only.</summary>
+
+`.sync` - syncs commands globally
+
+`.sync ~` - syncs commands to current guild (server)
+
+`.sync ^` - clears commands from current guild and syncs
+</details>

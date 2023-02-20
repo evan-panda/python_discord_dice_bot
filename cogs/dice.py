@@ -35,17 +35,16 @@ class Dice(commands.Cog):
     async def roll20(self, interaction: Interaction):
         """
         Rolls 1d20
-        - Command: /20
+        - Command: `/20`
         """
         roll = str(randint(1, 20))
-        print(f"'/20' - command executed - result: {roll}")
         await interaction.response.send_message(f'Rolling: 1d20\nRolled: ({roll})')
 
     @app_commands.command(
         name='r',
         description='Rolls dice from user input. e.g. 1d20+2',
     )
-    @app_commands.describe(rolls='Format examples: 2d6, 1d20+2+1d4')
+    @app_commands.describe(roll='Format examples: 2d6, 1d20+2+1d4')
     @app_commands.describe(roll_type='Select')
     @app_commands.choices(roll_type=[
         discord.app_commands.Choice(name='Standard', value='s'),
@@ -62,7 +61,7 @@ class Dice(commands.Cog):
         Roll dice formula input by user
         - Command: /r
         """
-        print(f"'/r' - command executed - user input rolls: {roll}\ntype: {roll_type.value}")
+        # print(f"'/r' - command executed - user input rolls: {roll}\ntype: {roll_type.value}")
         ephemeral_flag = False
         roller = dice_handler.DiceRoller(debug=True)
 
@@ -85,7 +84,7 @@ class Dice(commands.Cog):
                 roll_output[0],
                 roll_output[1],
                 roll_output[3],
-                "The message is too large, please roll less dice if you would like to see the individual results."
+                "The full message is too large, please roll less dice if you would like to see the individual results."
             ])
             await interaction.response.send_message(message, ephemeral=ephemeral_flag)
         else:

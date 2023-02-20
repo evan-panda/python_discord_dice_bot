@@ -4,10 +4,8 @@ from enum import Enum
 from user_exceptions import InvlidRollFormatException, TooManyDiceException
 
 # variables
-# replace_chars_regex = r'[\s\`\~\!\@\#\$\%\^\&\*\(\)\_\=\[\]\{\}\\\|\;\:\'\"\,\<\>\/\?\t\na-ce-zA-CE-Z]'
 replace_chars_regex = r'[^d\d+-]'
 replace_chars_pattern = re.compile(replace_chars_regex)
-replace_chars = '`~!@#$%^&*)(_=][}{\\|;:\'",.></? \t\r\n'
 
 # regex checks
 check_roll = r'([0-9]*[dD][0-9]+)'  # check for xdx, or just dx
@@ -19,6 +17,7 @@ check_invalid_chars = r'(?:(?![dD0-9+\-])[\x20-\x7e])+'  # check for everything 
 
 
 class RollType(Enum):
+    STANDARD = 'Standard'          # roll normally
     ADVANTAGE = 'Advantage'        # +1d, drop lowest
     DISADVANTAGE = 'Disadvantage'  # +1d, drop highest
     BEST = 'Best'                  # keep single best
@@ -26,7 +25,6 @@ class RollType(Enum):
     POOL = 'Pool'                  # roll dice pool(s), keep single highest
     DROPLOWEST = 'Drop Lowest'     # drop lowest value
     DROPHIGHEST = 'Drop Highest'   # drop lowest value
-    STANDARD = 'Standard'          # roll normally
 
 
 help_message = """

@@ -33,7 +33,7 @@ class Admin(commands.Cog):
     )
     async def hello(self, interaction: Interaction, name: str = ""):
         """Say hi to user"""
-        print(f"'/hello' - command executed - with {name}")
+        # print(f"'/hello' - command executed - with {name}")
         await interaction.response.send_message(
             f'Hello {name if name else interaction.user}! I am a bot that was made with Discord.py!', ephemeral=True
         )
