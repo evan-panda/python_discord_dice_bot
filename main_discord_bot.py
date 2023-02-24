@@ -4,11 +4,10 @@ from discord import app_commands, Intents, Interaction
 from discord.ext import commands
 import os
 from dotenv import load_dotenv
-# from typing import Optional, Literal
 
 
 load_dotenv()
-bot_token = os.environ['discord_bot_token']
+BOT_TOKEN = os.environ['discord_bot_token']
 test_server_id = os.environ['test_server_id']
 
 
@@ -16,7 +15,6 @@ class BotClient(commands.Bot):
     def __init__(self, *, command_prefix: str = ".", intents: Intents = discord.Intents.default(), **options) -> None:
         intents.message_content = True
         super().__init__(command_prefix=command_prefix, intents=intents, **options)
-        self.synced = False
 
     async def on_ready(self):
         await self.wait_until_ready()
@@ -46,7 +44,7 @@ def main():
     bot = BotClient()
 
     print('running bot')
-    bot.run(bot_token)
+    bot.run(BOT_TOKEN)
 
 
 if __name__ == '__main__':

@@ -5,3 +5,5 @@
 *.swp
 discord_bot_run.sh
 explore_file.py
+.python-version
+
