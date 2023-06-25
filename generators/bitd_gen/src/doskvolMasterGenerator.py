@@ -1,14 +1,14 @@
 # doskvolMasterGenerator.py
 # A menu interface capable of calling the individual Doskvol generators
 
-import buildings
-import demons
-import ghosts
-import leviathans
-import people
-import streets
-import cults
-import scores
+from . import buildings
+from . import demons
+from . import ghosts
+from . import leviathans
+from . import people
+from . import streets
+from . import cults
+from . import scores
 
 
 def main(generator: str):

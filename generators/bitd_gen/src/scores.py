@@ -2,8 +2,8 @@
 """Uses the tables at the end of Blades in the Dark to generate a description
 for a random score."""
 
-from dataSets import SCORE
-from generator import Generator
+from .dataSets import SCORE
+from .generator import Generator
 
 
 class Score(Generator):

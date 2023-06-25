@@ -42,18 +42,18 @@ class BitD(commands.Cog):
     )
     @app_commands.describe(generator='Select item to generate')
     @app_commands.choices(generator=[
-        discord.app_commands.Choice(name='npc common', value='1'),
-        discord.app_commands.Choice(name='npc rare', value='2'),
-        discord.app_commands.Choice(name='street description', value='3'),
-        discord.app_commands.Choice(name='building common', value='4'),
-        discord.app_commands.Choice(name='building rare', value='5'),
-        discord.app_commands.Choice(name='demon', value='6'),
-        discord.app_commands.Choice(name='ghost', value='7'),
-        discord.app_commands.Choice(name='cult', value='8'),
-        discord.app_commands.Choice(name='score', value='9'),
-        discord.app_commands.Choice(name='leviathan banal activity', value='10'),
-        discord.app_commands.Choice(name='leviathan surreal activity', value='11'),
-        discord.app_commands.Choice(name='leviathan spawn', value='12')
+        app_commands.Choice(name='npc common', value='1'),
+        app_commands.Choice(name='npc rare', value='2'),
+        app_commands.Choice(name='street description', value='3'),
+        app_commands.Choice(name='building common', value='4'),
+        app_commands.Choice(name='building rare', value='5'),
+        app_commands.Choice(name='demon', value='6'),
+        app_commands.Choice(name='ghost', value='7'),
+        app_commands.Choice(name='cult', value='8'),
+        app_commands.Choice(name='score', value='9'),
+        app_commands.Choice(name='leviathan banal activity', value='10'),
+        app_commands.Choice(name='leviathan surreal activity', value='11'),
+        app_commands.Choice(name='leviathan spawn', value='12')
     ])
     async def bitd_gen(self, interaction: Interaction, generator: discord.app_commands.Choice[str], whisper: bool = True):
         """
@@ -64,4 +64,10 @@ class BitD(commands.Cog):
 
         description = main(generator=generator.value)
 
-        await interaction.response.send_message(description, ephemeral=ephemeral_flag)
+        message = f"Generated: {generator.name}\n" + description
+
+        await interaction.response.send_message(message, ephemeral=ephemeral_flag)
+
+
+async def setup(bot):
+    await bot.add_cog(BitD(bot))

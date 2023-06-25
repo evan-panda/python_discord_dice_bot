@@ -2,8 +2,8 @@
 """Uses the tables at the end of Blades in the Dark to generate a description
 for a random streetscape."""
 
-from generator import Generator
-from dataSets import STREET
+from .generator import Generator
+from .dataSets import STREET
 
 
 class Street(Generator):

@@ -16,8 +16,8 @@ import sys
 from random import choice as rc
 from random import randint as ri
 
-from dataSets import LEVIATHAN, DEMON, GHOST
-from generator import Generator
+from .dataSets import LEVIATHAN, DEMON, GHOST
+from .generator import Generator
 
 
 class Leviathan(Generator):

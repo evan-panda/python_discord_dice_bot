@@ -6,8 +6,8 @@ import sys
 from random import choice as rc
 from random import choices as rcs
 
-from dataSets import PEOPLE, DEMON
-from generator import Generator
+from .dataSets import PEOPLE, DEMON
+from .generator import Generator
 
 
 class Person(Generator):

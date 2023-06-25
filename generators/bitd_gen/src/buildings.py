@@ -4,8 +4,8 @@ the rolling tables from the end of the Blades in the Dark rule book."""
 
 import sys
 
-from dataSets import BUILDING
-from generator import Generator
+from .dataSets import BUILDING
+from .generator import Generator
 
 
 class Building(Generator):

@@ -2,8 +2,8 @@
 """Uses the tables at the end of Blades in the Dark to generate a description
 for a random ghost."""
 
-from generator import Generator
-from dataSets import GHOST, PEOPLE
+from .generator import Generator
+from .dataSets import GHOST, PEOPLE
 
 
 class Ghost(Generator):

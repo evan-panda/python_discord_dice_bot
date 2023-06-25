@@ -2,8 +2,8 @@
 """The cults class creates a randomly generated cult instance utilizing
 the rolling tables from the end of the Blades in the Dark rule book."""
 
-from generator import Generator
-from dataSets import CULT
+from .generator import Generator
+from .dataSets import CULT
 
 
 class Cult(Generator):
