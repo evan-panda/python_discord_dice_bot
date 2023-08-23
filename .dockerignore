@@ -1,0 +1,19 @@
+# python
+__pycache__
+*.pyc 
+*.pyo
+*.pyd
+
+.flake8
+.python-version
+
+env/
+venv/
+
+# git
+.gitignore
+.git
+
+# other
+*.log
+*.md
