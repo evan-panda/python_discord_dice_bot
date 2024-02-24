@@ -1,0 +1,13 @@
+---
+version: "3.8"
+
+name: discord-bot
+services:
+  dice-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dice-bot
+    volumes:
+      - .:/code
+
