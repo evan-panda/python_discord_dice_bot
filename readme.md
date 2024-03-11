@@ -1,11 +1,6 @@
 # Description
 This is a dicord bot designed to aid in the playing of TTRPGs directly from discord.
 
-# Setup
-Open the [bot invite link](https://discord.com/api/oauth2/authorize?client_id=1015631326424072232&permissions=2112&scope=bot%20applications.commands) in your browser (where you are signed into discord) and invite the bot to the server you want it to join.
-
-Set up permissions on your channels so the bot can view the channel(s) you want to use it in.
-
 # Commands
 
 ## General
@@ -32,6 +27,17 @@ Set up permissions on your channels so the bot can view the channel(s) you want 
 ## Cards
 
 `/draw-card` - simulates drawing a random card from a standard deck (exluding Jokers)
+
+## Random Generators
+
+`/bdgen` - allows you to choose a generator for a random result to use in your *Blades in the Dark* game
+
+> **Note**: This command has the `whisper` option, so the results only show up for the one generating it if set to `True` (*default behavior*)
+
+| arguments | example values | optional |
+| - | - | - |
+| generator | `select from list` | false |
+| whisper | `True` or `False` | true |
 
 ## Owner Only
 <details>
