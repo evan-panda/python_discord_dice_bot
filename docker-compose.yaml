@@ -1,6 +1,3 @@
----
-version: "3.8"
-
 name: discord-bot
 services:
   dice-bot:
@@ -8,6 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: dice-bot
+    entrypoint: ["python", "-u", "main_discord_bot.py"]
     volumes:
       - .:/code
 
