@@ -15,7 +15,7 @@ ADVENTUR_PATHS = {
     "hex_details": DATA_DIRECTORY / "adventure/hex_details.json"
 }
 
-MICE_PATH = {
+MICE_PATHS = {
     "non_player_mice": DATA_DIRECTORY / "mice/non_player_mice.json",
     "player_mice": DATA_DIRECTORY / "mice/player_mice.json"
 }

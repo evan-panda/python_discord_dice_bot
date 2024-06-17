@@ -1,19 +1,28 @@
 from .data_paths import ADVENTUR_PATHS
-from .generator import Generator
+from generators.base_generator import Generator
 
 class AdventureGenerator(Generator):
     def __init__(self, adventure_seed = None, hex_details = None) -> None:
         pass
 
     def _get_seed_data(self) -> tuple[str, str, str]:
-        data = self._get_json_data()
+        data = self._get_json_data(ADVENTUR_PATHS['adventure_seeds'])
+
         creature = self._get_choice(data['Creature'])
         problem = self._get_choice(data['Problem'])
         complication = self._get_choice(data['Complication'])
-    
+
         return creature, problem, complication
 
     def get_adventure_seed(self):
-        seed_data = self._get_seed_data()
-        seed_data = f"There is a {seed_data[0]} that/that's {seed_data[1]}, but/and {seed_data[2]}"
+        creature, problem, complication = self._get_seed_data()
+        seed_data = f"There is a {creature}\n"\
+                    f"that has a problem: {problem},\n"\
+                    f"but it's complicated by: {complication}"
         return seed_data
+
+    def _get_hex_data(self) -> tuple:
+        pass
+
+    def get_hex_details(self) -> str:
+        pass

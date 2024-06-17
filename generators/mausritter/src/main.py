@@ -1,12 +1,14 @@
 from . import adventures
 
-def mausritter_main(generator: str):
+def mausritter_main(gen_choice: str):
     """mausritter generator"""
     generator_data = ''
-    if generator == "1":
-        print('generating adventure seed')
+    if gen_choice == "1":
+        print('generating adventure seed:')
         adv = adventures.AdventureGenerator()
         generator_data = adv.get_adventure_seed()
+    elif gen_choice == '2':
+        print('generating hex details:')
 
     return generator_data
 
