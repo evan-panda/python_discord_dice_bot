@@ -1,0 +1,47 @@
+{
+    "who_mouse": [
+        "Beetles",
+        "Centipedes",
+        "Moths",
+        "Spiders",
+        "Ants",
+        "Weevils",
+        "Snails",
+        "Crows",
+        "Mice"
+    ],
+    "who_general": [
+        "Lawcritters",
+        "Bounty Hunters",
+        "Bandits",
+        "Nobles",
+        "Workers",
+        "Farmers",
+        "Craftscritters",
+        "Rival Adventurers"
+    ],
+    "what": [
+        "Scavenging the Dead",
+        "Hunting Mice",
+        "Fighting an Enemy",
+        "Chasing an Enemy",
+        "Resting",
+        "Fleeing",
+        "Digging a tunnel",
+        "Carrying a treasure away",
+        "Hunting the Mice",
+        "Searching for the Mic"
+    ],
+    "how": [
+        "Help",
+        "Angry",
+        "Merciless",
+        "Hasty",
+        "Busy",
+        "Jumpy",
+        "Hungry",
+        "Afraid",
+        "Treacherous",
+        "Jovial"
+    ]
+}
