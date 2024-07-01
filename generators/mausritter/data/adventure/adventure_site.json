@@ -1,0 +1,98 @@
+{
+    "Construction": [
+        "Ancient bat cult temple",
+        "Long-abandoned watchtower",
+        "Noblemouse’s country manor",
+        "Hidden winter storehouse",
+        "Burial site of ancient mice",
+        "Warren dug by rabbits or foxes",
+        "Human house or other building",
+        "Sewer or drainage pipes",
+        "Claustrophobic ant-dug tunnels",
+        "Massive tree, carved out by mice",
+        "Wizard’s tower",
+        "Settlement’s grain mill",
+        "Rat King’s nest",
+        "Skeleton of a great beast",
+        "Witch’s academy",
+        "Gatehouse to faerie realm",
+        "Deep mine",
+        "Bandit’s hideout",
+        "Natural cave",
+        "Mouse settlement"
+    ],
+    "Ruination": [
+        "Flooding",
+        "Magical mishap",
+        "Age and rot",
+        "Human destruction",
+        "Overrun by mold",
+        "Shifted between realms",
+        "Attacked by great beast",
+        "Disastrous storm",
+        "Haunting spirits",
+        "Mysterious abandonment",
+        "Internal warfare",
+        "Disease"
+    ],
+    "Denizens": {
+        "Inhabitants": [
+            "Mice, driven mad or desperate",
+            "Mice, magically altered",
+            "Rat bandits",
+            "Creatures from a distant land",
+            "Original residents, strangely twisted",
+            "Ghostly spirits",
+            "Faerie advance guard",
+            "Foul-tempered snake",
+            "Infestation of insects",
+            "Cat lord and their servants"
+        ],
+        "Searching for / protecting": [
+            "A safe place to live or hide",
+            "Cache of fine food",
+            "Lost family or friend",
+            "Ancient, valuable artworks",
+            "The last scraps in a picked-over ruin",
+            "Rare alchemical mushrooms",
+            "Strange and powerful spell",
+            "Vast horde of pips"
+        ]
+    },
+    "Secret": [
+        "Monolith humming with arcane energy",
+        "Preserved precursor beast",
+        "Signs of human experimentation",
+        "Forgotten grave of an ancient queen",
+        "Path into the veins of the earth",
+        "Portal to faerie realm"
+    ],
+    "Empty room features": [
+        "Abandoned insect nest",
+        "Cluster of mushrooms",
+        "Collapsed wall or ceiling",
+        "Dried bug shells on the walls",
+        "Furniture made of repurposed trash",
+        "Huge drawing of bat face on wall",
+        "Mess of tables and chairs",
+        "Newspaper clipping wallpaper",
+        "Overgrown with moss",
+        "Painted mural, now faded",
+        "Platforms hanging over rapidly flowing water",
+        "Roots bursting out of walls/floor/ceiling",
+        "Rotting pile of acorns",
+        "Scattering of animal teeth",
+        "Shiny candy-wrapper banners",
+        "Snake skull doorway",
+        "Steady drip of water from ceiling",
+        "Stern statue of an ancient mouse",
+        "Uneven and deeply cracked floor",
+        "White quartz altar"
+    ],
+    "Room types": {
+        "Obstacle": [],
+        "Trap": [],
+        "Puzzle": [],
+        "Lair": []
+    }
+}
