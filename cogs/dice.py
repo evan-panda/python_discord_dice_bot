@@ -63,7 +63,7 @@ class Dice(commands.Cog):
         """
         # print(f"'/r' - command executed - user input rolls: {roll}\ntype: {roll_type.value}")
         ephemeral_flag = False
-        roller = dice_handler.DiceRoller(debug=True)
+        roller = dice_handler.DiceRoller(debug=False)
 
         roll_output = roller.handle_rolls(roll, roll_type.value)
 
@@ -146,5 +146,6 @@ class Dice(commands.Cog):
                 ephemeral=ephemeral_flag
             )
 
-async def setup(bot):
+
+async def setup(bot) -> None:
     await bot.add_cog(Dice(bot))

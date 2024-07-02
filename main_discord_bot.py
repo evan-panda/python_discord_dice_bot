@@ -18,19 +18,18 @@ class BotClient(commands.Bot):
 
     async def on_ready(self):
         await self.wait_until_ready()
-        await self.__load_cogs()
+        await self._load_cogs()
 
         print('all cogs loaded.')
         print(f'Logged in as {self.user}')
 
-    # @commands.command(name='test')
     @app_commands.command(name='test', description='testing commands')
     async def test(self, interaction: Interaction) -> None:
         print('hi from test cmd')
         # await ctx.send('hello there!')
         await interaction.response.send_message("hello there!")
 
-    async def __load_cogs(self):
+    async def _load_cogs(self) -> None:
         print('getting cog file list:')
         for file in os.listdir('./cogs'):
             if file.endswith('.py'):

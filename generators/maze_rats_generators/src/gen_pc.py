@@ -41,9 +41,9 @@ class RandomPC(Generator):
         pc_details = {
             'items': self.describe_pc_items(),
             'appearance': self.get_choice(self.load_json(PC_TABLES['APPEARANCE'])),
-            'physical_detail': self.get_choice(self.load_json(PC_TABLES['PYSICAL_DETAIL'])),
-            'background': self.get_choice(self.load_json(PC_TABLES['BACKGROUND'])),
+            'physical detail': self.get_choice(self.load_json(PC_TABLES['PYSICAL_DETAIL'])),
             'clothing': self.get_choice(self.load_json(PC_TABLES['CLOTHING'])),
+            'background': self.get_choice(self.load_json(PC_TABLES['BACKGROUND'])),
             'personality': self.get_choice(self.load_json(PC_TABLES['PERSONALITY'])),
             'mannerism': self.get_choice(self.load_json(PC_TABLES['MANNERISM'])),
             'weapons': self.describe_pc_weapons(),
@@ -54,7 +54,7 @@ class RandomPC(Generator):
 
     def describe_pc(self) -> str:
         """Get a description of the PC"""
-        return '\n'.join(f'{k}: {v}' for k, v in self._generate_pc_details().items())
+        return '\n'.join(f'**{k}:** {v}' for k, v in self._generate_pc_details().items())
 
 
 if __name__ == '__main__':

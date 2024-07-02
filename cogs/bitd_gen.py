@@ -1,6 +1,5 @@
 # system
 import os
-from random import randint
 
 # imports
 from dotenv import load_dotenv
@@ -55,7 +54,12 @@ class BitD(commands.Cog):
         app_commands.Choice(name='leviathan surreal activity', value='11'),
         app_commands.Choice(name='leviathan spawn', value='12')
     ])
-    async def bitd_gen(self, interaction: Interaction, generator: discord.app_commands.Choice[str], whisper: bool = True):
+    async def bitd_gen(
+        self,
+        interaction: Interaction,
+        generator: discord.app_commands.Choice[str],
+        whisper: bool = True
+    ) -> None:
         """
         Generate random item for Blades in the Dark
         - Command: /bdgen

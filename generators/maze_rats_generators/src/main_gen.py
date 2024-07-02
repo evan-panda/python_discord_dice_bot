@@ -13,37 +13,37 @@ What would you like to generate?
 """
 
 
-def main(choice: str, local_run: bool = False) -> None:
-    while choice.isnumeric():
+def main(generator: str, local_run: bool = False) -> None:
+    while generator.isnumeric():
         if local_run:
-            choice = input(PROMPT)
+            generator = input(PROMPT)
 
         description = ''
 
         magic = RandomMagic()
         pc = RandomPC()
 
-        if choice == '1':
+        if generator == '1':
             description = magic.get_random_spell(by_the_book=True)
             if local_run:
                 print('\n' + description, end='\n\n')
-        elif choice == '2':
+        elif generator == '2':
             description = magic.get_random_spell(by_the_book=False)
             if local_run:
                 print('\n' + description, end='\n\n')
-        elif choice == '3':
+        elif generator == '3':
             description = pc.describe_pc()
             if local_run:
                 print('\n' + description, end='\n\n')
-        elif choice == '4':
+        elif generator == '4':
             description = pc.describe_pc_items()
             if local_run:
                 print('\n' + description, end='\n\n')
         else:
-            description = f'Your choice of "{choice}" was not recognized as a valid option.'
-            if choice.isnumeric() and local_run:
+            description = f'Your choice of "{generator}" was not recognized as a valid option.'
+            if generator.isnumeric() and local_run:
                 print(
-                    f'Your choice of "{choice}" was not recognized as an option.'
+                    f'Your choice of "{generator}" was not recognized as an option.'
                     '\nPlease try again, or enter "x" to quit.'
                 )
             elif local_run:

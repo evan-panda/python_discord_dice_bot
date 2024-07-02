@@ -11,7 +11,7 @@ from . import cults
 from . import scores
 
 
-def main(generator: str):
+def main(generator: str) -> str:
     '''
         generator = input(
             """
