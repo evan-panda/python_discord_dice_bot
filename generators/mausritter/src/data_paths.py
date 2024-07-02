@@ -1,6 +1,5 @@
 from pathlib import Path
 
-
 # Establish a path to this file
 PATH_TO_DATASETS_FILE = Path(__file__)
 # Path to SRC directory
