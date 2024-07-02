@@ -1,4 +1,4 @@
-from .data_paths import ADVENTUR_PATHS
+from .data_paths import ADVENTURE_PATHS
 from generators.base_generator import Generator
 
 class AdventureGenerator(Generator):
@@ -6,7 +6,7 @@ class AdventureGenerator(Generator):
         pass
 
     def _get_seed_data(self) -> tuple[str, str, str]:
-        data = self._get_json_data(ADVENTUR_PATHS['adventure_seeds'])
+        data = self._get_json_data(ADVENTURE_PATHS['adventure_seeds'])
 
         creature = self._get_choice(data['Creature'])
         problem = self._get_choice(data['Problem'])
@@ -25,4 +25,7 @@ class AdventureGenerator(Generator):
         pass
 
     def get_hex_details(self) -> str:
+        pass
+
+    def get_three_word_story(self) -> str:
         pass

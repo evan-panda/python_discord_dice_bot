@@ -95,4 +95,4 @@ Select generator:
     return description
 
 if __name__ == "__main__":
-    main()
+    main("1")

@@ -10,12 +10,19 @@ MAUSRITTER_ROOT = SRC_DIRECTORY.parent
 # Path to data folder
 DATA_DIRECTORY = MAUSRITTER_ROOT / "data"
 
-ADVENTUR_PATHS = {
-    "adventure_seeds": DATA_DIRECTORY / "adventure/adventure_seeds.json",
-    "hex_details": DATA_DIRECTORY / "adventure/hex_details.json"
+adventure_path: Path = DATA_DIRECTORY / "adventure"
+ADVENTURE_PATHS = {
+    "adventure_seeds": adventure_path / "adventure_seeds.json",
+    "adventure_site": adventure_path / "adventure_site.json",
+    "hex_details": adventure_path / "hex_details.json",
+    "hex_type": adventure_path / "hex_type.json",
+    "landmark_details": adventure_path / "landmark_details.json",
+    "mouse_settlement": adventure_path / "mouse_settlement.json",
+    "three_word_story": adventure_path / "three_word_story.json"
 }
 
+mice_path: Path = DATA_DIRECTORY / "mice"
 MICE_PATHS = {
-    "non_player_mice": DATA_DIRECTORY / "mice/non_player_mice.json",
-    "player_mice": DATA_DIRECTORY / "mice/player_mice.json"
+    "non_player_mice": mice_path / "non_player_mice.json",
+    "player_mice": mice_path / "player_mice.json"
 }
