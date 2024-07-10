@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, shuffle
 
 from generators.base_generator import Generator
 from .datasets import PC_TABLES
@@ -36,9 +36,16 @@ class RandomPC(Generator):
         """Get the weapons of the PC"""
         return ', '.join(self._select_pc_weapons())
 
+    def _generate_pc_stats(self) -> list:
+        """Get the stats of the PC"""
+        stats = [0, 1, 2]
+        shuffle(stats)
+        return f'STR: {stats[0]}, DEX: {stats[1]}, WIL: {stats[2]}'
+
     def _generate_pc_details(self) -> dict:
         """Get the details of the PC"""
         pc_details = {
+            'stats': self._generate_pc_stats(),
             'items': self.describe_pc_items(),
             'appearance': self.get_choice(self.load_json(PC_TABLES['APPEARANCE'])),
             'physical detail': self.get_choice(self.load_json(PC_TABLES['PYSICAL_DETAIL'])),
@@ -48,13 +55,14 @@ class RandomPC(Generator):
             'mannerism': self.get_choice(self.load_json(PC_TABLES['MANNERISM'])),
             'weapons': self.describe_pc_weapons(),
             'armor': 'shield, light armor',
+            'hp': '4',
         }
 
         return pc_details
 
     def describe_pc(self) -> str:
         """Get a description of the PC"""
-        return '\n'.join(f'**{k}:** {v}' for k, v in self._generate_pc_details().items())
+        return '\n'.join(f'**{k.upper()}:** {v}' for k, v in self._generate_pc_details().items())
 
 
 if __name__ == '__main__':

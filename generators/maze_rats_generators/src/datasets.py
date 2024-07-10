@@ -14,6 +14,21 @@ MAGIC_TABLES = {
     "ETH_FORM": magic_tables_path + "/ethereal_forms.json",
 }
 
+monster_tables_path = DATA_PATH + "/monster_tables"
+MONSTER_TABLES = {
+    "MONSTER_AERIAL": monster_tables_path + "/animal_aerial.json",
+    "MONSTER_AQUATIC": monster_tables_path + "/animal_aquatic.json",
+    "MONSTER_TERRESTRIAL": monster_tables_path + "/animal_terrestrial.json",
+}
+
+npc_tables_path = DATA_PATH + "/npc_tables"
+NPC_TABLES = {
+    "NAME_FEMALE": npc_tables_path + "/name_female.json",
+    "NAME_MALE": npc_tables_path + "/name_male.json",
+    "NAME_SURNAME_LOWER": npc_tables_path + "/surname_lower.json",
+    "NAME_SURNAME_UPPER": npc_tables_path + "/surname_upper.json",
+}
+
 pc_tables_path = DATA_PATH + "/pc_tables"
 PC_TABLES = {
     "APPEARANCE": pc_tables_path + "/appearance.json",
