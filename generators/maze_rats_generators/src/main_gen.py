@@ -12,6 +12,14 @@ What would you like to generate?
 
 """
 
+"""
+Special Generator Cases:
+ANIMAL
+ELEMENT
+ITEM
+NPC
+"""
+
 
 def main(generator: str, local_run: bool = False) -> None:
     while generator.isnumeric():

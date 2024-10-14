@@ -5,7 +5,7 @@ from random import choice, choices, sample
 class Generator:
     def __init__(self) -> None:
         """Base class for all generators."""
-        pass
+        ...
 
     @staticmethod
     def load_json(file_name: str):
