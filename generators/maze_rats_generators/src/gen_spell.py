@@ -16,6 +16,7 @@ class MagicType(Enum):
 
 class RandomMagic(Generator):
     def __init__(self) -> None:
+        """Class for generating random magic spell names"""
         super().__init__()
 
     def _get_spell_formula(self, by_the_book: bool = True) -> tuple[MagicType, MagicType]:

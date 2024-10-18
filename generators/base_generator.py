@@ -8,7 +8,7 @@ class Generator:
         ...
 
     @staticmethod
-    def load_json(file_name: str):
+    def load_json(file_name: str) -> list[str]:
         """Load a JSON file"""
         with open(file_name) as file:
             return json.load(file)
