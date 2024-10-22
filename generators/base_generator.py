@@ -19,12 +19,12 @@ class Generator:
         return str(choice(data))
 
     @staticmethod
-    def get_choices(data: list, num_options: int = 2) -> list:
+    def get_choices(data: list[str], num_options: int = 2) -> list[str]:
         """Get a list of `num_options` items from the data (with replacement)"""
         return choices(data, k=num_options)
 
     @staticmethod
-    def get_unique_choices(data: list, num_options: int = 2) -> list:
+    def get_unique_choices(data: list[str], num_options: int = 2) -> list[str]:
         """Get a list of unique items from the data (without replacement)"""
         # if requested number of options is greater than the number of items in the data, return the data
         if num_options > len(data):

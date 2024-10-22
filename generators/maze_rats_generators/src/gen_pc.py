@@ -1,4 +1,4 @@
-from random import randint, shuffle
+from random import choice, shuffle
 
 from generators.base_generator import Generator
 from .datasets import NPC_TABLES, PC_TABLES
@@ -9,7 +9,7 @@ class RandomPC(Generator):
         """Class for generating random PC details"""
         super().__init__()
 
-    def _select_pc_items(self) -> list:
+    def _select_pc_items(self) -> list[str]:
         """Get a list of items"""
         item_data = self.load_json(PC_TABLES['ITEM'])
         return self.get_unique_choices(item_data, num_options=6)
@@ -18,13 +18,13 @@ class RandomPC(Generator):
         """Get the items as a string"""
         return ', '.join(self._select_pc_items())
 
-    def _select_pc_weapons(self) -> list:
+    def _select_pc_weapons(self) -> list[str]:
         """Get the list of weapons for the PC"""
         weapon_data = self.load_json(PC_TABLES['WEAPON'])
         weapons = []
 
         # 50% chance of having a ranged weapon
-        if randint(0, 1):
+        if choice([True, False]):
             range_weapon_data = self.load_json(PC_TABLES['RANGED_WEAPON'])
             weapons.append(self.get_choice(range_weapon_data))
             weapons.append(self.get_choice(weapon_data))
@@ -67,7 +67,7 @@ class RandomPC(Generator):
         m_name, f_name, u_name, l_name = self._generate_pc_names()
         return f'{m_name} (m) / {f_name} (f) | {u_name} / {l_name}'
 
-    def _generate_pc_details(self) -> dict:
+    def _generate_pc_details(self) -> dict[str, str]:
         """Get the details of the PC"""
         pc_details = {
             'stats': self.describe_pc_stats(),
