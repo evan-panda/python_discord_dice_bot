@@ -5,13 +5,16 @@ from .datasets import NPC_TABLES, PC_TABLES
 
 
 class RandomPC(Generator):
-    num_unique: int = 4
-    last_4_backgrounds: list = []
-    last_4_names_female: list = []
-    last_4_names_last: list = []
-    last_4_names_male: list = []
-    last_4_personality: list = []
-    last_4_physical_details: list = []
+    NUM_UNIQUE: int = 4
+    last_x_appearance: list = []
+    last_x_backgrounds: list = []
+    last_x_clothing: list = []
+    last_x_mannerisms: list = []
+    last_x_names_female: list = []
+    last_x_names_last: list = []
+    last_x_names_male: list = []
+    last_x_personality: list = []
+    last_x_physical_details: list = []
 
     def __init__(self) -> None:
         """Class for generating random PC details"""
@@ -56,16 +59,16 @@ class RandomPC(Generator):
         stats = self._generate_pc_stats()
         return f'STR: {stats[0]}, DEX: {stats[1]}, WIL: {stats[2]}'
 
-    def _get_unique_choice(self, choices: list[str], last_4: list[str]) -> str:
+    def _get_unique_choice(self, choices: list[str], last_x: list[str]) -> str:
         """Returns an item that isn't already in the given list"""
         item = self.get_choice(choices)
-        while (item in last_4):
+        while (item in last_x):
             item = self.get_choice(choices)
 
-        if len(last_4) == self.num_unique:
-            last_4.pop(0)
+        if len(last_x) == self.NUM_UNIQUE:
+            last_x.pop(0)
 
-        last_4.append(item)
+        last_x.append(item)
 
         return item
 
@@ -76,10 +79,10 @@ class RandomPC(Generator):
         u_names = self.load_json(NPC_TABLES['NAME_SURNAME_UPPER'])
         l_names = self.load_json(NPC_TABLES['NAME_SURNAME_LOWER'])
 
-        m_name = self._get_unique_choice(m_names, self.last_4_names_male)
-        f_name = self._get_unique_choice(f_names, self.last_4_names_female)
-        u_name = self._get_unique_choice(u_names, self.last_4_names_last)
-        l_name = self._get_unique_choice(l_names, self.last_4_names_last)
+        m_name = self._get_unique_choice(m_names, self.last_x_names_male)
+        f_name = self._get_unique_choice(f_names, self.last_x_names_female)
+        u_name = self._get_unique_choice(u_names, self.last_x_names_last)
+        l_name = self._get_unique_choice(l_names, self.last_x_names_last)
 
         return m_name, f_name, u_name, l_name
 
@@ -93,12 +96,12 @@ class RandomPC(Generator):
         pc_details = {
             'stats': self.describe_pc_stats(),
             'items': self.describe_pc_items(),
-            'appearance': self.get_choice(self.load_json(PC_TABLES['APPEARANCE'])),
-            'physical detail': self._get_unique_choice(self.load_json(PC_TABLES['PYSICAL_DETAIL']), self.last_4_physical_details),  # noqa: E501
-            'clothing': self.get_choice(self.load_json(PC_TABLES['CLOTHING'])),
-            'background': self._get_unique_choice(self.load_json(PC_TABLES['BACKGROUND']), self.last_4_backgrounds),
-            'personality': self._get_unique_choice(self.load_json(PC_TABLES['PERSONALITY']), self.last_4_personality),
-            'mannerism': self.get_choice(self.load_json(PC_TABLES['MANNERISM'])),
+            'appearance': self._get_unique_choice(self.load_json(PC_TABLES['APPEARANCE']), self.last_x_appearance),
+            'physical detail': self._get_unique_choice(self.load_json(PC_TABLES['PYSICAL_DETAIL']), self.last_x_physical_details),  # noqa: E501
+            'clothing': self._get_unique_choice(self.load_json(PC_TABLES['CLOTHING']), self.last_x_clothing),
+            'background': self._get_unique_choice(self.load_json(PC_TABLES['BACKGROUND']), self.last_x_backgrounds),
+            'personality': self._get_unique_choice(self.load_json(PC_TABLES['PERSONALITY']), self.last_x_personality),
+            'mannerism': self._get_unique_choice(self.load_json(PC_TABLES['MANNERISM']), self.last_x_mannerisms),
             'weapons': self.describe_pc_weapons(),
             'armor': 'shield, light armor',
             'hp': '4',
