@@ -60,7 +60,12 @@ class RandomPC(Generator):
         return f'STR: {stats[0]}, DEX: {stats[1]}, WIL: {stats[2]}'
 
     def _get_unique_choice(self, choices: list[str], last_x: list[str]) -> str:
-        """Returns an item that isn't already in the given list"""
+        """Select an item that isn't already in the given list.
+        
+        :param list[str] choices: The list to choose and item from.
+        :param list[str] last_x: The list containing items that should not be chosen.
+        :return str: An item from the given list that doesn't exist in the `last_x` list.
+        """
         item = self.get_choice(choices)
         while (item in last_x):
             item = self.get_choice(choices)
