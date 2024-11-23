@@ -49,7 +49,8 @@ class RandomMagic(Generator):
         """
         Get a spell with a random name
 
-        :param by_the_book: bool, if True, the spell name will be generated according to the book
+        :param bool by_the_book: if True, the spell name will be generated according to the book
+        :returns str: The randomly generated name for the spell
         """
         effect, form = self._get_spell_formula(by_the_book)
 

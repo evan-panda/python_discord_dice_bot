@@ -31,17 +31,19 @@ class MazeRats(commands.Cog):
         description='Generate a random item for Maze Rats',
     )
     @app_commands.describe(generator='Select item to generate')
-    @app_commands.choices(generator=[
-        app_commands.Choice(name='character details', value='3'),
-        app_commands.Choice(name='character items', value='4'),
-        app_commands.Choice(name='spell name', value='1'),
-        # app_commands.Choice(name='spell name (random)', value='2'),
-    ])
+    @app_commands.choices(
+        generator=[
+            app_commands.Choice(name='character details', value=3),
+            app_commands.Choice(name='character items', value=4),
+            app_commands.Choice(name='spell name', value=1),
+            # app_commands.Choice(name='spell name (random)', value='2'),
+        ]
+    )
     async def rat_gen(
         self,
         interaction: Interaction,
-        generator: discord.app_commands.Choice[str],
-        whisper: bool = False
+        generator: app_commands.Choice[int],  # [int] seems to represent the type that value is
+        whisper: bool = False,
     ) -> None:
         """
         Generate random item for Maze Rats
@@ -51,7 +53,7 @@ class MazeRats(commands.Cog):
 
         description = main(generator=generator.value)
 
-        message = f"Generated: {generator.name}\n---\n" + description
+        message = f'Generated: {generator.name}\n---\n{description}'
 
         await interaction.response.send_message(message, ephemeral=ephemeral_flag)
 

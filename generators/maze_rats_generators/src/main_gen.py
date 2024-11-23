@@ -13,6 +13,7 @@ What would you like to generate?
 """
 
 """
+Note:
 Special Generator Cases:
 ANIMAL
 ELEMENT
@@ -20,33 +21,38 @@ ITEM
 NPC
 """
 
+magic = RandomMagic()
+pc = RandomPC()
 
 def main(generator: str, local_run: bool = False) -> None:
+    """This is the main generator for the Maze Rates tables."""
     while generator.isnumeric():
         if local_run:
             generator = input(PROMPT)
 
+        generator = int(generator)
         description = ''
 
-        magic = RandomMagic()
-        pc = RandomPC()
-
-        if generator == '1':
+        if generator == 1:
             description = magic.get_random_spell(by_the_book=True)
             if local_run:
-                print('\n' + description, end='\n\n')
-        elif generator == '2':
+                print(f'\n{description}', end='\n\n')
+        elif generator == 2:
             description = magic.get_random_spell(by_the_book=False)
             if local_run:
-                print('\n' + description, end='\n\n')
-        elif generator == '3':
+                print(f'\n{description}', end='\n\n')
+        elif generator == 3:
             description = pc.describe_pc()
             if local_run:
-                print('\n' + description, end='\n\n')
-        elif generator == '4':
+                print(f'\n{description}', end='\n\n')
+        elif generator == 4:
             description = pc.describe_pc_items()
             if local_run:
-                print('\n' + description, end='\n\n')
+                print(f'\n{description}', end='\n\n')
+        elif generator == 5:
+            description = 'npc'  # npc.describe_npc()
+        elif generator == 6:
+            description = 'monster'  # monster.describe_monster()
         else:
             description = f'Your choice of "{generator}" was not recognized as a valid option.'
             if generator.isnumeric() and local_run:

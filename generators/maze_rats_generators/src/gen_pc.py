@@ -3,9 +3,9 @@ from random import choice, shuffle
 from generators.base_generator import Generator
 from .datasets import NPC_TABLES, PC_TABLES
 
+NUM_UNIQUE: int = 4
 
 class RandomPC(Generator):
-    NUM_UNIQUE: int = 4
     last_x_appearance: list = []
     last_x_backgrounds: list = []
     last_x_clothing: list = []
@@ -65,7 +65,7 @@ class RandomPC(Generator):
         while (item in last_x):
             item = self.get_choice(choices)
 
-        if len(last_x) == self.NUM_UNIQUE:
+        if len(last_x) == NUM_UNIQUE:
             last_x.pop(0)
 
         last_x.append(item)
@@ -92,12 +92,17 @@ class RandomPC(Generator):
         return f'{m_name} (m) / {f_name} (f) | {u_name} / {l_name}'
 
     def _generate_pc_details(self) -> dict[str, str]:
-        """Get the details of the PC"""
+        """Create the details of the PC.
+        
+        :returns dict[str, str]: Dictionary of details for a PC, including items, a general appearance, and background.
+        """
         pc_details = {
             'stats': self.describe_pc_stats(),
             'items': self.describe_pc_items(),
             'appearance': self._get_unique_choice(self.load_json(PC_TABLES['APPEARANCE']), self.last_x_appearance),
-            'physical detail': self._get_unique_choice(self.load_json(PC_TABLES['PYSICAL_DETAIL']), self.last_x_physical_details),  # noqa: E501
+            'physical detail': self._get_unique_choice(
+                self.load_json(PC_TABLES['PYSICAL_DETAIL']), self.last_x_physical_details
+            ),
             'clothing': self._get_unique_choice(self.load_json(PC_TABLES['CLOTHING']), self.last_x_clothing),
             'background': self._get_unique_choice(self.load_json(PC_TABLES['BACKGROUND']), self.last_x_backgrounds),
             'personality': self._get_unique_choice(self.load_json(PC_TABLES['PERSONALITY']), self.last_x_personality),
@@ -111,7 +116,10 @@ class RandomPC(Generator):
         return pc_details
 
     def describe_pc(self) -> str:
-        """Get a description of the PC"""
+        """Get a description of the PC.
+        
+        :returns str: The description of a PC formatted for output in a discord message.
+        """
         return '\n'.join(f'**{k.upper()}:** {v}' for k, v in self._generate_pc_details().items())
 
 
